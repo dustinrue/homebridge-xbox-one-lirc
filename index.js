@@ -1,5 +1,6 @@
 var ping = require('ping');
 var lirc = require('lirc_node');
+var powerState = 0;
 
 var Service, Characteristic;
 
@@ -13,11 +14,23 @@ function XboxAccessory(log, config) {
   this.log = log;
   this.name = config['name'] || 'Xbox';
   this.ip = config['ipAddress'];
-  var pingTimer = setInterval(pinger, 1000 * 5);
+  var pingTimer = setInterval(function() {
+    pinger(this);
+  }, 1000 * 5);
 }
 
-function pinger() {
-  this.log("pinger fired");
+function pinger(object) {
+  var self = object;
+  self.log("Probing " + self.name + " at " + self.ip);
+  ping.sys.probe(self.ip, function(isAlive) {
+    if (isAlive) {
+      self.log(self.name + " is up");
+    }
+    else {
+      self.log(self.name + " is down");
+    }
+    powerState = isAlive;
+  });
 }
 
 XboxAccessory.prototype = {
