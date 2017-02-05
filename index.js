@@ -26,9 +26,11 @@ function pinger(object) {
   ping.sys.probe(self.ip, function(isAlive) {
     if (isAlive) {
       self.log(self.name + " is up");
+      XboxAccessory.prototype.getCharacteristic(Characteristic.On).getValue();
     }
     else {
       self.log(self.name + " is down");
+      XboxAccessory.prototype.getCharacteristic(Characteristic.On).getValue();
     }
     powerState = isAlive;
   });
