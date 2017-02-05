@@ -71,9 +71,7 @@ XboxAccessory.prototype = {
   },
 
   getPowerState: function(callback) {
-    ping.sys.probe(this.ip, function(isAlive){
-      callback(null, isAlive);
-    });
+    callback(null, powerState);
   },
 
   identify: function(callback) {
