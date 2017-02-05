@@ -33,6 +33,6 @@
   "homepage": "https://github.com/dustinrue/homebridge-xbox-one-lirc#readme",
   "dependencies": {
     "ping": "0.2.0",
-    "lirc-node": "0.0.4"
+    "lirc_node": "0.0.4"
   }
 }
