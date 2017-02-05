@@ -57,7 +57,7 @@ XboxAccessory.prototype = {
       ping.sys.probe(this.ip, function(isAlive){
         self.log("isAlive is");
         console.log(isAlive);
-        if (isAlive == powerOn) {
+        if ((isAlive) ? 0:1 == powerOn) {
           self.log("Power toggle worked");
           callback(1);
         }
