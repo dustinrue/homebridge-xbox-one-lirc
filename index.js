@@ -14,22 +14,20 @@ function XboxAccessory(log, config) {
   this.log = log;
   this.name = config['name'] || 'Xbox';
   this.ip = config['ipAddress'];
-  var xboxAccessoryObject = this;
-  
 }
 
-function pinger(object) {
-  var self = object;
+function pinger(switchService, xboxAccessory) {
+  var self = xboxAccessory;
   
   self.log("Probing " + self.name + " at " + self.ip);
   ping.sys.probe(self.ip, function(isAlive) {
     if (isAlive) {
       self.log(self.name + " is up");
-      object.getCharacteristic(Characteristic.On).getValue();
+      switchService.getCharacteristic(Characteristic.On).getValue();
     }
     else {
       self.log(self.name + " is down");
-      object.getCharacteristic(Characteristic.On).getValue();
+      switchService.getCharacteristic(Characteristic.On).getValue();
     }
     powerState = isAlive;
   });
@@ -94,8 +92,9 @@ XboxAccessory.prototype = {
       .getCharacteristic(Characteristic.On)
       .on('get', this.getPowerState.bind(this));
 
+    var xboxAccessory = this;
     var pingTimer = setInterval(function() {
-      pinger(switchService);
+      pinger(switchService, xboxAccessory);
     }, 1000 * 5);
 
     return [switchService];
