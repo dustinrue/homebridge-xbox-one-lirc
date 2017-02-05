@@ -41,17 +41,22 @@ XboxAccessory.prototype = {
     
     if (powerOn) {
       lirc.irsend.send_once('XBOX-ONE', 'PowerOn', function() {
-        self.log("Sending power on command to '" + this.name + "'...");
+        self.log("Sending power on command to '" + self.name + "'...");
       });
     }
     else {
       lirc.irsend.send_once('XBOX-ONE', 'PowerOff', function() {
-        self.log("Sending power off command to '" + this.name + "'...");
+        self.log("Sending power off command to '" + self.name + "'...");
       });
     }
 
     // Don't really care about powerOn errors, and don't want more than one callback
-    callback();
+    setTimeout(function() {
+      ping.sys.probe(this.ip, function(isAlive){
+        callback(isAlive);
+      });
+    }, 5000);
+    
   },
 
   getPowerState: function(callback) {
