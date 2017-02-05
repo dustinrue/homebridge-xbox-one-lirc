@@ -55,6 +55,8 @@ XboxAccessory.prototype = {
     // Don't really care about powerOn errors, and don't want more than one callback
     setTimeout(function() {
       ping.sys.probe(this.ip, function(isAlive){
+        self.log("isAlive is");
+        console.log(isAlive);
         if (isAlive == powerOn) {
           self.log("Power toggle worked");
           callback(1);
