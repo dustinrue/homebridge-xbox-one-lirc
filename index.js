@@ -14,8 +14,9 @@ function XboxAccessory(log, config) {
   this.log = log;
   this.name = config['name'] || 'Xbox';
   this.ip = config['ipAddress'];
+  var xboxAccessoryObject = this;
   var pingTimer = setInterval(function() {
-    pinger(this);
+    pinger(xboxAccessoryObject);
   }, 1000 * 5);
 }
 
