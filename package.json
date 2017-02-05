@@ -1,0 +1,38 @@
+{
+  "name": "homebridge-xbox-one-lirc",
+  "version": "0.0.1",
+  "description": "Homebridge plugin to manage the power state of an Xbox One using LiRC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dustinrue/homebridge-xbox-one-lirc.git"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "xbox",
+    "one",
+    "xbox-one",
+    "xbone",
+    "WOL",
+    "wake on lan",
+    "lirc"
+  ],
+  "author": "Dustin Rue",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dustinrue/homebridge-xbox-one-lirc/issues"
+  },
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "homepage": "https://github.com/dustinrue/homebridge-xbox-one-lirc#readme",
+  "dependencies": {
+    "ping": "0.2.0",
+    "lirc-node": "0.0.4"
+  }
+}
