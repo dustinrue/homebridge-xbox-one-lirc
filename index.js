@@ -39,6 +39,8 @@ XboxAccessory.prototype = {
   setPowerState: function(powerOn, callback) {
     var self = this;
     
+    self.log("powerOn value is");
+    console.log(powerOn);
     if (powerOn) {
       lirc.irsend.send_once('XBOX-ONE', 'PowerOn', function() {
         self.log("Sending power on command to '" + self.name + "'...");
