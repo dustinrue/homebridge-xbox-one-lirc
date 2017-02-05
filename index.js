@@ -22,7 +22,7 @@ function XboxAccessory(log, config) {
 
 function pinger(object) {
   var self = object;
-  var service = Service.Switch(self.name);
+  
   
   self.log("Probing " + self.name + " at " + self.ip);
   ping.sys.probe(self.ip, function(isAlive) {
