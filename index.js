@@ -22,15 +22,17 @@ function XboxAccessory(log, config) {
 
 function pinger(object) {
   var self = object;
+  var service = Service.Switch(self.name);
+  
   self.log("Probing " + self.name + " at " + self.ip);
   ping.sys.probe(self.ip, function(isAlive) {
     if (isAlive) {
       self.log(self.name + " is up");
-      XboxAccessory.prototype.getCharacteristic(Characteristic.On).getValue();
+      service.getCharacteristic(Characteristic.On).getValue();
     }
     else {
       self.log(self.name + " is down");
-      XboxAccessory.prototype.getCharacteristic(Characteristic.On).getValue();
+      service.getCharacteristic(Characteristic.On).getValue();
     }
     powerState = isAlive;
   });
