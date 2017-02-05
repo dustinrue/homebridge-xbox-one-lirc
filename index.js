@@ -28,11 +28,11 @@ function pinger(object) {
   ping.sys.probe(self.ip, function(isAlive) {
     if (isAlive) {
       self.log(self.name + " is up");
-      service.getCharacteristic(Characteristic.On).getValue();
+      //service.getCharacteristic(Characteristic.On).getValue();
     }
     else {
       self.log(self.name + " is down");
-      service.getCharacteristic(Characteristic.On).getValue();
+      //service.getCharacteristic(Characteristic.On).getValue();
     }
     powerState = isAlive;
   });
