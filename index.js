@@ -13,6 +13,11 @@ function XboxAccessory(log, config) {
   this.log = log;
   this.name = config['name'] || 'Xbox';
   this.ip = config['ipAddress'];
+  var pingTimer = setInterval(pinger, 1000 * 5);
+}
+
+function pinger() {
+  this.log("pinger fired");
 }
 
 XboxAccessory.prototype = {
