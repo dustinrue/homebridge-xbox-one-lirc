@@ -22,10 +22,7 @@ function XboxAccessory(log, config) {
 
 function pinger(object) {
   var self = object;
-  
-  
-  self.log("Probing " + self.name + " at " + self.ip);
-  ping.sys.probe(self.ip, function(isAlive) {
+  XboxAccessory.getPowerState(function(unknown, isAlive) {
     if (isAlive) {
       self.log(self.name + " is up");
       //service.getCharacteristic(Characteristic.On).getValue();
@@ -36,6 +33,13 @@ function pinger(object) {
     }
     powerState = isAlive;
   });
+  /*
+  self.log("Probing " + self.name + " at " + self.ip);
+  ping.sys.probe(self.ip, function(isAlive) {
+    
+    
+  });
+  */
 }
 
 XboxAccessory.prototype = {
