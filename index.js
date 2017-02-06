@@ -51,12 +51,10 @@ XboxAccessory.prototype = {
       });
     }
 
-    var checkDelay = (powerOn) ? 15000:8000;
+    var checkDelay = (powerOn) ? 8000:15000;
 
     setTimeout(function() {
       ping.sys.probe(this.ip, function(isAlive){
-        self.log("isAlive is");
-        console.log(isAlive);
         if ((isAlive) ? 0:1 == powerOn) {
           self.log("Power toggle worked");
           callback(1);
