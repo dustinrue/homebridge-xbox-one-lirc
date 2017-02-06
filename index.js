@@ -21,7 +21,6 @@ function XboxAccessory(log, config) {
 function pinger(switchService, xboxAccessory) {
   var self = xboxAccessory;
 
-  self.log("Probing " + self.name);
   ping.sys.probe(self.ip, function(isAlive) {
     powerState = isAlive;
     if (isAlive) {
@@ -54,7 +53,7 @@ XboxAccessory.prototype = {
       });
       setTimeout(function() {
         startPinger(switchService, self);
-      }, 30000);
+      }, 150000);
     }
     else {
       powerState = 0;
@@ -63,7 +62,7 @@ XboxAccessory.prototype = {
       });
       setTimeout(function() {
         startPinger(switchService, self);
-      }, 30000);
+      }, 150000);
     }
     
     // we can't reliably determine if the Xbox has heard us.
@@ -75,6 +74,7 @@ XboxAccessory.prototype = {
   },
 
   getPowerState: function(callback) {
+    this.log("is " (powerState) ? "up":"down");
     callback(null, powerState);
   },
 
