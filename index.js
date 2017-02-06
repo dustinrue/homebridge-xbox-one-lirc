@@ -21,15 +21,13 @@ function pinger(switchService, xboxAccessory) {
   
   self.log("Probing " + self.name + " at " + self.ip);
   ping.sys.probe(self.ip, function(isAlive) {
+    powerState = isAlive;
     if (isAlive) {
-      self.log(self.name + " is up");
       switchService.getCharacteristic(Characteristic.On).getValue();
     }
     else {
-      self.log(self.name + " is down");
       switchService.getCharacteristic(Characteristic.On).getValue();
     }
-    powerState = isAlive;
   });
 }
 
@@ -50,23 +48,13 @@ XboxAccessory.prototype = {
         self.log("Sending power off command to '" + self.name + "'...");
       });
     }
-
-    var checkDelay = (powerOn) ? 8000:15000;
-
-    setTimeout(function() {
-      ping.sys.probe(this.ip, function(isAlive){
-        if ((isAlive) ? 0:1 == powerOn) {
-          self.log("Power toggle worked");
-          callback(1);
-        }
-        else {
-          self.log("Power toggle failed");
-          callback(0);
-        }
-        
-      });
-    }, checkDelay);
     
+    // we can't reliably determine if the Xbox has heard us.
+    // The delay between power on and network availability depends on 
+    // if the user is using power save mode vs instant on. 
+    // Power off doesn't down the network interface immediately and
+    // the Xbox often brings up the interface to check for updates
+    callback();
   },
 
   getPowerState: function(callback) {
@@ -90,6 +78,10 @@ XboxAccessory.prototype = {
       .on('get', this.getPowerState.bind(this));
 
     var xboxAccessory = this;
+
+    // setup a timer to check the power state of the Xbox
+    // This isn't terribly reliable for reasons listed above
+    // but is better than nothing
     var pingTimer = setInterval(function() {
       pinger(switchService, xboxAccessory);
     }, 1000 * 5);
