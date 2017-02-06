@@ -22,11 +22,8 @@ function pinger(switchService, xboxAccessory) {
   var self = xboxAccessory;
 
   ping.sys.probe(self.ip, function(isAlive) {
-    powerState = isAlive;
-    if (isAlive) {
-      switchService.getCharacteristic(Characteristic.On).getValue();
-    }
-    else {
+    if (isAlive != powerState) {
+      powerState = isAlive;
       switchService.getCharacteristic(Characteristic.On).getValue();
     }
   });
