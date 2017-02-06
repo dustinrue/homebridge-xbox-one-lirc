@@ -74,7 +74,8 @@ XboxAccessory.prototype = {
   },
 
   getPowerState: function(callback) {
-    this.log("is " (powerState) ? "up":"down");
+    var status = (powerState) ? "up":"down"
+    this.log("is " + status);
     callback(null, powerState);
   },
 
