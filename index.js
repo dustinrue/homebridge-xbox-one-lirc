@@ -48,6 +48,7 @@ XboxAccessory.prototype = {
     clearInterval(pingTimer);
 
     if (powerOn) {
+      powerState = 1;
       lirc.irsend.send_once('XBOX-ONE', 'PowerOn', function() {
         self.log("Sending power on command to '" + self.name + "'...");
       });
@@ -56,6 +57,7 @@ XboxAccessory.prototype = {
       }, 30000);
     }
     else {
+      powerState = 0;
       lirc.irsend.send_once('XBOX-ONE', 'PowerOff', function() {
         self.log("Sending power off command to '" + self.name + "'...");
       });
