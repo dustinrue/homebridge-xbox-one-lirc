@@ -51,7 +51,8 @@ XboxAccessory.prototype = {
       });
     }
 
-    // Don't really care about powerOn errors, and don't want more than one callback
+    var checkDelay = (powerOn) ? 15000:8000;
+
     setTimeout(function() {
       ping.sys.probe(this.ip, function(isAlive){
         self.log("isAlive is");
@@ -66,7 +67,7 @@ XboxAccessory.prototype = {
         }
         
       });
-    }, 5000);
+    }, checkDelay);
     
   },
 
