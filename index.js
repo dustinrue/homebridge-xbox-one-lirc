@@ -33,6 +33,7 @@ function pinger(switchService, xboxAccessory) {
 }
 
 function startPinger(switchService, xboxAccessory) {
+  clearInterval(pingTimer);
   pingTimer = setInterval(function() {
       pinger(switchService, xboxAccessory);
     }, 1000 * 5);
