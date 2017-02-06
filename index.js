@@ -2,6 +2,7 @@ var ping = require('ping');
 var lirc = require('lirc_node');
 var powerState = 0;
 var pingTimer = null;
+var pingValues = [];
 var switchService;
 
 var Service, Characteristic;
@@ -18,11 +19,20 @@ function XboxAccessory(log, config) {
   this.ip = config['ipAddress'];
 }
 
+function wasAlive(ping) {
+  return ping;
+}
+
 function pinger(switchService, xboxAccessory) {
   var self = xboxAccessory;
 
   ping.sys.probe(self.ip, function(isAlive) {
-    if (isAlive != powerState) {
+    pingValues.push(isAlive);
+    if (pingValues.length > 3) {
+      pingValues.shift();
+    }
+
+    if (pingValues.every(wasAlive) != powerState) {
       powerState = isAlive;
       switchService.getCharacteristic(Characteristic.On).getValue();
     }
