@@ -1,7 +1,8 @@
 var ping = require('ping');
 var lirc = require('lirc_node');
-var powerState = 0;
+var powerState = false;
 var pingTimer = null;
+var pingValues = [];
 var switchService;
 
 var Service, Characteristic;
@@ -18,11 +19,20 @@ function XboxAccessory(log, config) {
   this.ip = config['ipAddress'];
 }
 
+function wasAlive(ping) {
+  return ping;
+}
+
 function pinger(switchService, xboxAccessory) {
   var self = xboxAccessory;
 
   ping.sys.probe(self.ip, function(isAlive) {
-    if (isAlive != powerState) {
+    pingValues.push(isAlive);
+    if (pingValues.length > 3) {
+      pingValues.shift();
+    }
+
+    if (pingValues.every(wasAlive) != powerState) {
       powerState = isAlive;
       switchService.getCharacteristic(Characteristic.On).getValue();
     }
@@ -30,6 +40,8 @@ function pinger(switchService, xboxAccessory) {
 }
 
 function startPinger(switchService, xboxAccessory) {
+  xboxAccessory.log("Starting pinger");
+  pingValues = [];
   clearInterval(pingTimer);
   pingTimer = setInterval(function() {
       pinger(switchService, xboxAccessory);
@@ -42,25 +54,26 @@ XboxAccessory.prototype = {
     var self = this;
 
     // stop updating power status for awhile
+    self.log("Canceling pinger");
     clearInterval(pingTimer);
 
     if (powerOn) {
-      powerState = 1;
+      powerState = true;
       lirc.irsend.send_once('XBOX-ONE', 'PowerOn', function() {
         self.log("Sending power on command to '" + self.name + "'...");
       });
       setTimeout(function() {
         startPinger(switchService, self);
-      }, 150000);
+      }, 150000); // give the xbox 2.5 minutes to start
     }
     else {
-      powerState = 0;
+      powerState = false;
       lirc.irsend.send_once('XBOX-ONE', 'PowerOff', function() {
         self.log("Sending power off command to '" + self.name + "'...");
       });
       setTimeout(function() {
         startPinger(switchService, self);
-      }, 150000);
+      }, 300000); // wait for 5 minutes for the Xbox to settle
     }
     
     // we can't reliably determine if the Xbox has heard us.

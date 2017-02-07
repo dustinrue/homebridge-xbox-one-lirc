@@ -1,6 +1,6 @@
 {
   "name": "homebridge-xbox-one-lirc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Homebridge plugin to manage the power state of an Xbox One using LiRC",
   "main": "index.js",
   "scripts": {
